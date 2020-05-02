@@ -1,0 +1,62 @@
+ALL-data set name 
+ accuracy best parameters :DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=0,
+            splitter='best')
+ Confusion matrix:
+| TP:258 FP:10 |
+| FN:17 TN:302 |
+Acc :0.954003407155
+ SC :0.94670846395
+ BH :0.0618181818182
+ F-measure :0.957210776545
+ MCC :0.90776131615
+ Mean time of predict :0.000217755755756 
+ 
+ALL-data set name 
+ accuracy best parameters :DecisionTreeRegressor(criterion='mse', max_depth=None, max_features=None,
+           max_leaf_nodes=None, min_impurity_decrease=0.0,
+           min_impurity_split=None, min_samples_leaf=1,
+           min_samples_split=2, min_weight_fraction_leaf=0.0,
+           presort=False, random_state=0, splitter='best')
+ Confusion matrix:
+| TP:258 FP:10 |
+| FN:17 TN:302 |
+Acc :0.954003407155
+ SC :0.94670846395
+ BH :0.0618181818182
+ F-measure :0.957210776545
+ MCC :0.90776131615
+ Mean time of predict :0.000204803203203 
+ 
+ALL-data set name 
+ accuracy best parameters :AdaBoostRegressor(base_estimator=DecisionTreeRegressor(criterion='mse', max_depth=None, max_features=None,
+           max_leaf_nodes=None, min_impurity_decrease=0.0,
+           min_impurity_split=None, min_samples_leaf=1,
+           min_samples_split=2, min_weight_fraction_leaf=0.0,
+           presort=False, random_state=0, splitter='best'),
+         learning_rate=1.0, loss='linear', n_estimators=300,
+         random_state=0)
+ Confusion matrix:
+| TP:260 FP:8 |
+| FN:17 TN:302 |
+Acc :0.957410562181
+ SC :0.94670846395
+ BH :0.0613718411552
+ F-measure :0.960254372019
+ MCC :0.914837486739
+ Mean time of predict :0.0403562862863 
+ 
+
+ table 
+  Data                            Algoritm   Metrica       ACC        SC  \
+0  ALL           Decision trees Classifier  accuracy  0.954003  0.946708   
+1  ALL            Decision trees Regressor  accuracy  0.954003  0.946708   
+2  ALL  Decision trees Regressor  AdaBoost  accuracy  0.957411  0.946708   
+
+         BH        F1       MCC  Mean time of predict  
+0  0.061818  0.957211  0.907761              0.000218  
+1  0.061818  0.957211  0.907761              0.000205  
+2  0.061372  0.960254  0.914837              0.040356  
