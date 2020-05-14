@@ -18,6 +18,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import recall_score
 import pandas as pd
 import numpy as np
+import pickle
 
 models = {
     'RandomForestClassifier': RandomForestClassifier(random_state=0),
@@ -99,7 +100,7 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
     pd.set_option("display.max_rows", None, "display.max_columns", None)
     rez = pd.DataFrame(columns=['Data', 'Algoritm', 'Metrica', 'ACC', 'SC', 'BH', 'F1', 'MCC', 'Mean time of predict'])
     list_method_name = ["Decision trees Classifier", 'Decision trees Regressor','Decision trees Regressor  AdaBoost']
-    file = open(".\\results\\" + "Decision trees" + " " + time_stamp + ".txt", 'w+')
+    logs_file = open(".\\train_results\\" + "Decision trees" + " " + time_stamp + ".txt", 'w+')
     for method_name in list_method_name:
         print(method_name + " ")
         for score in scores:
@@ -107,7 +108,6 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
             est_params = params[method_name]
             abori = []
             gscv = GridSearchCV(estimator=est, param_grid=est_params, cv=10, scoring=score, iid=True)  # iid ->True
-            print type(gscv)
             gscv.fit(X_train, y_train)
             print(score + " best parameters :{}".format(gscv.best_estimator_))
             # print("cu scorul (accuracy) : "+format(gscv.best_estimator_.score(X_test, y_test))+" \n")
@@ -132,13 +132,17 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
             SC = recall_score(y_true, y_pred)
             BH = float(FN) / float(TP + FN)  # FNR
 
+            model_file = open(".\\models\\" + method_name + " " + time_stamp + ".pkl" , "wb")
+            pickle.dump(gscv.best_estimator_, model_file)
+            model_file.close()
+
             n = 1000
             time_list = pd.DataFrame(columns=['RandomForestClassifier',
                                            'Decision trees'],
                                   index=np.arange(n))
             for index in range(1, n):
                 start = time.clock()
-                y_pred = gscv.predict(X_test)
+                y_pred = gscv.best_estimator_.predict(X_test)
                 stop = time.clock()
                 timp = stop - start
                 time_list.loc[index, method_name] = timp
@@ -146,20 +150,20 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
             rez = rez.append(pd.Series([dataset_name, method_name, score, ACC, SC, BH, F1, MCC, time_mean], index=rez.columns),
                              ignore_index=True)
 
-            file.write(dataset_name + "-data set name \n ")
-            file.write(score + " best parameters :{}".format(gscv.best_estimator_))
-            file.write("\n Confusion matrix:\n")
-            file.write("| TP:" + format(TP) + " FP:" + format(FP) + " |\n")
-            file.write("| FN:" + format(FN) + " TN:" + format(TN) + " |\n")
-            file.write("Acc :" + format(ACC))
-            file.write("\n SC :" + format(SC))
-            file.write("\n BH :" + format(BH))
-            file.write("\n F-measure :" + format(F1))
-            file.write("\n MCC :" + format(MCC))
-            file.write("\n Mean time of predict :" + format(time_mean))
-            file.write(" \n \n")
-    file.write("\n table \n")
-    file.write(format(rez))
-    file.close()
+            logs_file.write(dataset_name + "-data set name \n ")
+            logs_file.write(score + " best parameters :{}".format(gscv.best_estimator_))
+            logs_file.write("\n Confusion matrix:\n")
+            logs_file.write("| TP:" + format(TP) + " FP:" + format(FP) + " |\n")
+            logs_file.write("| FN:" + format(FN) + " TN:" + format(TN) + " |\n")
+            logs_file.write("Acc :" + format(ACC))
+            logs_file.write("\n SC :" + format(SC))
+            logs_file.write("\n BH :" + format(BH))
+            logs_file.write("\n F-measure :" + format(F1))
+            logs_file.write("\n MCC :" + format(MCC))
+            logs_file.write("\n Mean time of predict :" + format(time_mean))
+            logs_file.write(" \n \n")
+    logs_file.write("\n table \n")
+    logs_file.write(format(rez))
+    logs_file.close()
     return rez
 

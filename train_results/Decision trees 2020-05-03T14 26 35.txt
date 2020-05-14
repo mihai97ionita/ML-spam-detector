@@ -1,0 +1,71 @@
+ALL-data set name 
+ accuracy best parameters :DecisionTreeClassifier(ccp_alpha=0.0, class_weight=None, criterion='gini',
+                       max_depth=None, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, presort='deprecated',
+                       random_state=0, splitter='best')
+ Confusion matrix:
+| TP:257 FP:11 |
+| FN:19 TN:300 |
+Acc :0.948892674616695
+ SC :0.9404388714733543
+ BH :0.06884057971014493
+ F-measure :0.9523809523809524
+ MCC :0.8975900610664116
+ Mean time of predict :0.0003067510510510605 
+ 
+ALL-data set name 
+ accuracy best parameters :DecisionTreeRegressor(ccp_alpha=0.0, criterion='mse', max_depth=None,
+                      max_features=None, max_leaf_nodes=None,
+                      min_impurity_decrease=0.0, min_impurity_split=None,
+                      min_samples_leaf=1, min_samples_split=2,
+                      min_weight_fraction_leaf=0.0, presort='deprecated',
+                      random_state=0, splitter='best')
+ Confusion matrix:
+| TP:257 FP:11 |
+| FN:19 TN:300 |
+Acc :0.948892674616695
+ SC :0.9404388714733543
+ BH :0.06884057971014493
+ F-measure :0.9523809523809524
+ MCC :0.8975900610664116
+ Mean time of predict :0.00028237517517517923 
+ 
+ALL-data set name 
+ accuracy best parameters :AdaBoostRegressor(base_estimator=DecisionTreeRegressor(ccp_alpha=0.0,
+                                                       criterion='mse',
+                                                       max_depth=None,
+                                                       max_features=None,
+                                                       max_leaf_nodes=None,
+                                                       min_impurity_decrease=0.0,
+                                                       min_impurity_split=None,
+                                                       min_samples_leaf=1,
+                                                       min_samples_split=2,
+                                                       min_weight_fraction_leaf=0.0,
+                                                       presort='deprecated',
+                                                       random_state=0,
+                                                       splitter='best'),
+                  learning_rate=1.0, loss='linear', n_estimators=10,
+                  random_state=0)
+ Confusion matrix:
+| TP:259 FP:9 |
+| FN:21 TN:298 |
+Acc :0.948892674616695
+ SC :0.9341692789968652
+ BH :0.075
+ F-measure :0.9520766773162939
+ MCC :0.898132268317215
+ Mean time of predict :0.002911015115115124 
+ 
+
+ table 
+  Data                            Algoritm   Metrica       ACC        SC  \
+0  ALL           Decision trees Classifier  accuracy  0.948893  0.940439   
+1  ALL            Decision trees Regressor  accuracy  0.948893  0.940439   
+2  ALL  Decision trees Regressor  AdaBoost  accuracy  0.948893  0.934169   
+
+         BH        F1       MCC  Mean time of predict  
+0  0.068841  0.952381  0.897590              0.000307  
+1  0.068841  0.952381  0.897590              0.000282  
+2  0.075000  0.952077  0.898132              0.002911  

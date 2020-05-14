@@ -12,6 +12,7 @@ df_s = pd.read_csv(".\\datasets\\Youtube05-Shakira.csv")
 frame=[df_p,df_k,df_l,df_e,df_s]
 df_merged = pd.concat(frame)
 keys = ["Psy","KatyPerry","LMFAO","Eminem","Shakira"]
+keys = ["Psy","KatyPerry","LMFAO","Eminem","Shakira"]
 df_merged_keys = pd.concat(frame,keys=keys)
 df_merged_keys.to_csv(".\\datasets\\YoutubeSpam.csv")
 df= df_merged_keys #simplificare denumire
