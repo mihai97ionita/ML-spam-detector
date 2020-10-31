@@ -5,10 +5,10 @@ from flask_table import Table, Col
 
 def predict_in_html_table(videoId):
     # Load model
-    with open(".\\models\\" + "ACTIVE") as f:
+    with open("./models/" + "ACTIVE") as f:
         active_model_file_name = f.readline()
     print("This is the model that we are going to use: "+active_model_file_name)
-    model_file = open(".\\models\\" + active_model_file_name, "rb")
+    model_file = open("models/Decision trees Classifier 2020-05-03T17 10 02.pkl", "rb")
     model = pickle.load(model_file)
     model_file.close()
 
