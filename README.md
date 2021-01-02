@@ -2,13 +2,9 @@
 
 ###Requirements:
 - Anaconda
-- Python 3.7
 - Pip 
 
 ###Set up:
-- Open anaconda prompt 
-- Create new env: `conda create -n env_ml python=3.7`
-- Activate it `conda activate env_ml`
 - Install requirements from file `pip install -r requirements.txt`
 
 ###Run scripts:
