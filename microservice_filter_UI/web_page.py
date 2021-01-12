@@ -1,7 +1,9 @@
 from flask import Flask
 from microservice_classify import main_predict
 from flask_table import Table, Col
+
 app = Flask(__name__)
+app.config["DEBUG"] = True
 
 
 # Declare your table
@@ -19,18 +21,18 @@ class Item(object):
         self.comment = comment
 
 
-def to_html_visual(comments_table):
-    comments_table_html = []
+def to_html_visual(list_of_comments):
+    list_of_rows = []
 
-    for index, rows in comments_table.iterrows():
-        item = Item(rows[2].__str__(),
-                    rows[0].__str__(),
-                    rows[1].__str__())
-        comments_table_html.append(item)
+    for element in list_of_comments:
+        item = Item(predict=element['predict'],
+                    author=element['text'],
+                    comment=element['text'])
+        list_of_rows.append(item)
 
-    table = ItemTable(comments_table_html)
+    table = ItemTable(list_of_rows)
 
-    return table.__html__().replace('<tr><td>1','<tr style="background-color:#FF0000"><td>1')
+    return table.__html__().replace('<tr><td>1', '<tr style="background-color:#FF0000"><td>1')
 
 
 @app.route('/')
@@ -41,8 +43,7 @@ def hello():
 @app.route('/<videoId>')
 def table(videoId):
     predict_results = main_predict.predict(videoId)
-    page = to_html_visual(predict_results)
-    return page
+    return to_html_visual(predict_results)
 
 
 if __name__ == '__main__':

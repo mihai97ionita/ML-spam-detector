@@ -258,12 +258,12 @@ def main(argv):
 
 def comments_extractor(youtube_id):
     commentArr = [] 
-    try:
-        for comment in download_comments(youtube_id):
-            comment_json = comment
-            commentArr.append(comment_json)
+    #try:
+    for comment in download_comments(youtube_id):
+        comment_json = comment
+        commentArr.append(comment_json)
 
-        return commentArr
-    except Exception as e:
-        print('Error:', str(e))
-        sys.exit(1)
+    return commentArr
+    # except Exception as e:
+    #     print('Error:', str(e))
+    #     sys.exit(1)
