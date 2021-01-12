@@ -1,10 +1,11 @@
 #DM
 
 ###Requirements:
-- Anaconda
+- Python 3.7
 - Pip 
 
 ###Set up:
+- Select you env OR create one with Pycharm (python3.7) and open a terminal from Pycharm
 - Install requirements from file `pip install -r requirements.txt`
 
 ###Run scripts:

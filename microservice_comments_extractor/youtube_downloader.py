@@ -38,7 +38,7 @@ def ajax_request(session, url, params=None, data=None, headers=None, retries=5, 
 
 
 def download_comments(youtube_id, sleep=.1):
-    if r'\"isLiveContent\":true' in requests.get(YOUTUBE_VIDEO_URL.format(youtube_id=youtube_id)).text:
+    if r'"isLiveContent":true' in requests.get(YOUTUBE_VIDEO_URL.format(youtube_id=youtube_id)).text:
         print('Live stream detected! Not all comments may be downloaded.')
         return download_comments_new_api(youtube_id, sleep)
     return download_comments_old_api(youtube_id, sleep)
@@ -52,8 +52,9 @@ def download_comments_new_api(youtube_id, sleep=1):
     response = session.get(YOUTUBE_VIDEO_URL.format(youtube_id=youtube_id))
     html = response.text
     session_token = find_value(html, 'XSRF_TOKEN', 3)
+    session_token = bytes(session_token, 'ascii').decode('unicode-escape')
 
-    data = json.loads(find_value(html, 'window["ytInitialData"] = ', 0, '\n').rstrip(';'))
+    data = json.loads(find_value(html, 'var ytInitialData = ', 0, '};') + '}')
     for renderer in search_dict(data, 'itemSectionRenderer'):
         ncd = next(search_dict(renderer, 'nextContinuationData'), None)
         if ncd:
@@ -70,7 +71,7 @@ def download_comments_new_api(youtube_id, sleep=1):
                                         'itct': itct},
                                 data={'session_token': session_token},
                                 headers={'X-YouTube-Client-Name': '1',
-                                         'X-YouTube-Client-Version': '2.20200207.03.01'})
+                                         'X-YouTube-Client-Version': '2.20201202.06.01'})
 
         if not response:
             break
@@ -126,6 +127,7 @@ def download_comments_old_api(youtube_id, sleep=1):
 
     page_token = find_value(html, 'data-token')
     session_token = find_value(html, 'XSRF_TOKEN', 3)
+    session_token = bytes(session_token, 'ascii').decode('unicode-escape')
 
     first_iteration = True
 

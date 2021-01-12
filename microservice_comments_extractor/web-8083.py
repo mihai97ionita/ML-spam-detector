@@ -1,3 +1,5 @@
+import json
+
 import flask
 import pickle
 import requests
@@ -15,7 +17,8 @@ app.config["DEBUG"] = True
 def get_comments_from_url():
     query_parameters = request.args
     videoId = query_parameters.get('id')
-    return youtube_downloader.comments_extractor(videoId)
+    result = youtube_downloader.comments_extractor(videoId)
+    return json.dumps(result)
 
 
 app.run(port=8083)
