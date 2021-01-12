@@ -27,7 +27,7 @@ def to_html_visual(list_of_comments):
     for element in list_of_comments:
         item = Item(predict=element['predict'],
                     author=element['text'],
-                    comment=element['text'])
+                    comment=element['author'])
         list_of_rows.append(item)
 
     table = ItemTable(list_of_rows)
