@@ -36,13 +36,13 @@ def to_html_visual(list_of_comments):
 
 
 @app.route('/')
-def hello():
+def render_home():
     return "\n Put your VideoID in the path of the website :D ^^\n Like /K0KV7F4shEk"
 
 
 @app.route('/<videoId>')
-def table(videoId):
-    predict_results = main_predict.predict(videoId)
+def render_predict_results(video_id: str):
+    predict_results = main_predict.predict(video_id)
     return to_html_visual(predict_results)
 
 
