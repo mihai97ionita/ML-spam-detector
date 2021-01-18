@@ -1,17 +1,9 @@
-import sklearn
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import BernoulliNB
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.svm import LinearSVC
-from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import AdaBoostRegressor
 
 from sklearn.metrics import confusion_matrix
-import math
 from sklearn.metrics import matthews_corrcoef
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
@@ -60,7 +52,7 @@ params = {
 
 from sklearn.model_selection import GridSearchCV
 
-#scores = ['accuracy', 'recall']  # recall se traduce in rata de prindere a spamului
+# scores = ['accuracy', 'recall']  # recall se traduce in rata de prindere a spamului
 scores = ['accuracy']  # recall se traduce in rata de prindere a spamului
 
 
@@ -99,7 +91,7 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
     time_stamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%dT%H %M %S')
     pd.set_option("display.max_rows", None, "display.max_columns", None)
     rez = pd.DataFrame(columns=['Data', 'Algoritm', 'Metrica', 'ACC', 'SC', 'BH', 'F1', 'MCC', 'Mean time of predict'])
-    list_method_name = ["Decision trees Classifier", 'Decision trees Regressor','Decision trees Regressor  AdaBoost']
+    list_method_name = ["Decision trees Classifier", 'Decision trees Regressor', 'Decision trees Regressor  AdaBoost']
     logs_file = open(".\\train_results\\" + "Decision trees" + " " + time_stamp + ".txt", 'w+')
     for method_name in list_method_name:
         print(method_name + " ")
@@ -115,7 +107,7 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
             clf[method_name] = gscv.best_estimator_
             y_pred = gscv.best_estimator_.predict(X_test)
 
-            #abori.append(max(get_node_depths(gscv.best_estimator_.tree_)))
+            # abori.append(max(get_node_depths(gscv.best_estimator_.tree_)))
             # print("Cea mai mare adancime:" + format(max(abori)))
             # print("Cea mai mica adancime:" + format(min(abori)))
             # print("Adancimea medie:" + format(np.mean(abori)))
@@ -132,14 +124,14 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
             SC = recall_score(y_true, y_pred)
             BH = float(FN) / float(TP + FN)  # FNR
 
-            model_file = open(".\\models\\" + method_name + " " + time_stamp + ".pkl" , "wb")
+            model_file = open(".\\models\\" + method_name + " " + time_stamp + ".pkl", "wb")
             pickle.dump(gscv.best_estimator_, model_file)
             model_file.close()
 
             n = 1000
             time_list = pd.DataFrame(columns=['RandomForestClassifier',
-                                           'Decision trees'],
-                                  index=np.arange(n))
+                                              'Decision trees'],
+                                     index=np.arange(n))
             for index in range(1, n):
                 start = time.clock()
                 y_pred = gscv.best_estimator_.predict(X_test)
@@ -147,8 +139,9 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
                 timp = stop - start
                 time_list.loc[index, method_name] = timp
             time_mean = time_list[method_name].mean()
-            rez = rez.append(pd.Series([dataset_name, method_name, score, ACC, SC, BH, F1, MCC, time_mean], index=rez.columns),
-                             ignore_index=True)
+            rez = rez.append(
+                pd.Series([dataset_name, method_name, score, ACC, SC, BH, F1, MCC, time_mean], index=rez.columns),
+                ignore_index=True)
 
             logs_file.write(dataset_name + "-data set name \n ")
             logs_file.write(score + " best parameters :{}".format(gscv.best_estimator_))
@@ -167,3 +160,10 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
     logs_file.close()
     return rez
 
+
+from data_manipulator_package import data_manipulator_service
+
+
+def train_store():
+    x_train, x_test, y_train, y_test = data_manipulator_service.get_train_data()
+    DT_boosted_fit(x_train, y_train, x_test, y_test, "ALL")
