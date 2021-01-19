@@ -256,7 +256,7 @@ def main(argv):
         sys.exit(1)
 
 
-def comments_extractor(youtube_id):
+def get_comments(youtube_id):
     commentArr = [] 
     #try:
     for comment in download_comments(youtube_id):

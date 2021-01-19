@@ -105,7 +105,7 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
             # print("cu scorul (accuracy) : "+format(gscv.best_estimator_.score(X_test, y_test))+" \n")
             y_true = y_test
             clf[method_name] = gscv.best_estimator_
-            y_pred = gscv.best_estimator_.predict(X_test)
+            y_pred = gscv.best_estimator_.display_comments(X_test)
 
             # abori.append(max(get_node_depths(gscv.best_estimator_.tree_)))
             # print("Cea mai mare adancime:" + format(max(abori)))
@@ -134,7 +134,7 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
                                      index=np.arange(n))
             for index in range(1, n):
                 start = time.clock()
-                y_pred = gscv.best_estimator_.predict(X_test)
+                y_pred = gscv.best_estimator_.display_comments(X_test)
                 stop = time.clock()
                 timp = stop - start
                 time_list.loc[index, method_name] = timp
@@ -164,6 +164,21 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
 from data_manipulator_package import data_manipulator_service
 
 
-def train_store():
-    x_train, x_test, y_train, y_test = data_manipulator_service.get_train_data()
+def train():
+    x_train, x_test, y_train, y_test = data_manipulator_service.load_data()
+    # training models
     DT_boosted_fit(x_train, y_train, x_test, y_test, "ALL")
+
+
+def load_trained_model():
+    with open("../train_store_package/models/" + "ACTIVE") as f:
+        active_model_file_name = f.readline().replace('\n', '')
+        if active_model_file_name == "" or active_model_file_name is None:
+            raise Exception("No file found, use train service")
+    print("This is the model that we are going to use: " + active_model_file_name)
+    # this data is saved by train and store
+    return open(f"../train_store_package/models/{active_model_file_name}", "rb")
+
+
+def load_bag_of_words():
+    return open("../train_store_package/bag_of_words.pkl", "rb")

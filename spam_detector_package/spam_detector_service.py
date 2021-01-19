@@ -16,7 +16,7 @@ class Item(object):
         self.comment = comment
 
 
-def compute_ui(list_of_comments):
+def run_spam_detector(list_of_comments):
     list_of_rows = []
 
     for element in list_of_comments:

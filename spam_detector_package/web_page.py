@@ -12,9 +12,9 @@ def render_home():
 
 
 @app.route('/<video_id>')
-def render_predict_results(video_id: str):
-    predict_results = classificator_service.predict(video_id)
-    return spam_detector_service.compute_ui(predict_results)
+def run_spam_detector(video_id: str):
+    predict_comments = classificator_service.display_comments(video_id)
+    return spam_detector_service.run_spam_detector(predict_comments)
 
 
 if __name__ == '__main__':

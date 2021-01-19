@@ -5,7 +5,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 
-def get_train_data(data_set_path: str = "../data_manipulator_package/datasets"):
+def load_data(data_set_path: str = "../data_manipulator_package/datasets"):
     # Load all our dataset to merge them
     df_p = pd.read_csv(f"{data_set_path}/Youtube01-Psy.csv")
     df_k = pd.read_csv(f"{data_set_path}/Youtube02-KatyPerry.csv")
