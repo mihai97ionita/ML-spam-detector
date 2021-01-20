@@ -81,7 +81,7 @@ import datetime
 import time
 
 
-def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
+def train_DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
     """
     fits the list of models to the training data, thereby obtaining in each
     case an evaluation score after GridSearchCV cross-validation
@@ -98,19 +98,13 @@ def DT_boosted_fit(X_train, y_train, X_test, y_test, dataset_name):
         for score in scores:
             est = models[method_name]
             est_params = params[method_name]
-            abori = []
             gscv = GridSearchCV(estimator=est, param_grid=est_params, cv=10, scoring=score, iid=True)  # iid ->True
             gscv.fit(X_train, y_train)
             print(score + " best parameters :{}".format(gscv.best_estimator_))
-            # print("cu scorul (accuracy) : "+format(gscv.best_estimator_.score(X_test, y_test))+" \n")
             y_true = y_test
             clf[method_name] = gscv.best_estimator_
             y_pred = gscv.best_estimator_.display_comments(X_test)
 
-            # abori.append(max(get_node_depths(gscv.best_estimator_.tree_)))
-            # print("Cea mai mare adancime:" + format(max(abori)))
-            # print("Cea mai mica adancime:" + format(min(abori)))
-            # print("Adancimea medie:" + format(np.mean(abori)))
             cm = confusion_matrix(y_true, y_pred)
             TP = cm[0][0]
             FP = cm[0][1]
@@ -166,8 +160,7 @@ from data_manipulator_package import data_manipulator_service
 
 def train():
     x_train, x_test, y_train, y_test = data_manipulator_service.load_data()
-    # training models
-    DT_boosted_fit(x_train, y_train, x_test, y_test, "ALL")
+    train_DT_boosted_fit(x_train, y_train, x_test, y_test, "ALL")
 
 
 def load_trained_model():

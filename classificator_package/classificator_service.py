@@ -10,8 +10,7 @@ cache = ExpiringDict(max_len=5, max_age_seconds=60)
 
 def display_comments(video_id: str):
     if cache.get(video_id) is None:
-        # Load model
-        list_of_dicts = classify_comments(video_id)
+        list_of_dicts = get_comments(video_id)
         cache[video_id] = list_of_dicts
         return list_of_dicts
     else:
@@ -41,12 +40,12 @@ def load_trained_model_and_bag_of_words():
     return model, bag_of_words
 
 
-def classify_comments(video_id: str):
+def get_comments(video_id: str):
     model, bag_of_words = load_trained_model_and_bag_of_words()
-    # download comments videoId
-    list_of_dicts_of_comments = youtube_downloader_api.get_comments(video_id)
+    list_of_dicts_of_comments = youtube_downloader_api.parse(video_id)
     for index, comment in enumerate(list_of_dicts_of_comments):
         parsed_comment = bag_of_words.transform([comment['text']]).toarray()
         y_predict = model.predict(parsed_comment)
         comment['predict'] = y_predict[0]
     return list_of_dicts_of_comments
+
